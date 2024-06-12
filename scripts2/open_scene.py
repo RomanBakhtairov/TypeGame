@@ -1,7 +1,7 @@
 import scenes
 import pygame
 class StartScene(scenes.Scene):
-    def start(self, screen, pygame_module):
+    def start(self, screen, pygame_module):# просто выгружаем очень все файлы и добавляем их в objects, что отрисовывать их
         super().start(screen, pygame_module)
         self.flag = True
         self.texter = self.font.render('Начать игру', False, 'White')
@@ -9,7 +9,7 @@ class StartScene(scenes.Scene):
         self.button = Button(self.texter, self.button_im,[450,300])
         self.objects.append( self.button.frame)
         self.objects.append( self.button.text)
-    def update(self):
+    def update(self):# здесь происходит отслеживание нажатия на кнопку
         super().update()
         mouse = self.pygame_module.mouse.get_pos()
         if self.button.rect.collidepoint(mouse) and self.pygame_module.mouse.get_pressed()[0] and self.flag:
@@ -23,7 +23,7 @@ class StartScene(scenes.Scene):
 
 
 
-class Button:
+class Button:# В общем и целом класс служит просто для хранения пары текст + рамка для кнопки
     def __init__(self,text_surface,frame_surface, cords) -> None:
         self.text = scenes.GameObject(text_surface, [cords[0]+ 145 , cords[1] + 30])
         self.frame = scenes.GameObject(frame_surface, cords)
