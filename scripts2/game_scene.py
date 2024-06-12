@@ -2,6 +2,7 @@ import scenes
 import pygame
 class GameScene(scenes.Scene):
     def update(self):
+        self.screen.fill((100,100,100))
         dx,dy = self.player_obj.player_speed_vector
         super().update(relativespeed=[-dx, -dy])
         
@@ -18,7 +19,7 @@ class GameScene(scenes.Scene):
         self.screen.fill((100,100,100))
         self.background = pygame_module.image.load(scenes.Scene.IM_path + 'map.jpg')
         #
-        self.player = pygame_module.Surface((50,50))
+        self.player = pygame_module.Surface((50,50))#Пространство, чтобы поменять код
         self.player.fill("Blue")
         #
         icon = pygame.image.load(scenes.Scene.IM_path + 'icon.png').convert_alpha()
