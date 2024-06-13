@@ -15,14 +15,14 @@ class Player(scenes.Movable_Game_Object):
         #
         #
     def move(self):#Метод отвечает за движение по кнопкам.
-        keys = self.pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        self.keys = self.pygame.key.get_pressed()
+        if self.keys[pygame.K_LEFT]:
             self.speed_vector[0] = -self.speed
-        elif keys[pygame.K_RIGHT]:
+        elif self.keys[pygame.K_RIGHT]:
             self.speed_vector[0] = self.speed
-        elif keys[pygame.K_DOWN]:
+        elif self.keys[pygame.K_DOWN]:
             self.speed_vector[1] = self.speed
-        elif keys[pygame.K_UP]:
+        elif self.keys[pygame.K_UP]:
             self.speed_vector[1] =- self.speed
         else:
             self.speed_vector = [0,0]

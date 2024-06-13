@@ -2,6 +2,7 @@ import pygame
 import scenes as sc
 import open_scene as op
 import game_scene as gm
+import test_scene as ts
 class Game:# Главный игровой класс, для его создания нужна самая первая сцена. В самом низу создаем экзмпляр класса
     IMAGE_PATH = '../python game/images/'
     #
@@ -27,13 +28,17 @@ class Game:# Главный игровой класс, для его созда�
             #
             #
             #
+            self.current_scene.events = pygame.event.get()
+            #
+            #
+            #
             if self.current_scene.TriggerFlag:# проверяет, нужно ли скакнуть на следущую сцену
                 self.current_scene =self.current_scene.to_next_scene()#Он помнит все созданные сцены и просто перейдёт к сцене, созданной после этой
                 self.current_scene.start(self.screen, pygame)
             #
             #
             #
-            for event in pygame.event.get():#Отвечает за нажатие esc
+            for event in self.current_scene.events:#Отвечает за нажатие esc
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     self.game_in_run = False
@@ -47,7 +52,7 @@ class Game:# Главный игровой класс, для его созда�
 
 if __name__ == '__main__':
     pygame.init()# Это для pygame 
-    newscene = op.StartScene()#Создаем сцены в порядке следования
+    newscene = gm.GameScene()#Создаем сцены в порядке следования
     game_scene = gm.GameScene()
     my_game = Game(newscene)
     

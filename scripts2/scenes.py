@@ -6,8 +6,7 @@ class Scene:
     def __init__(self):
         self.objects = []
         Scene.my_scenes.append(self)
-
-
+        self.events = []
     def update(self,  relativespeed = [0,0]):
         screen = self.screen
         pygame_module = self.pygame_module
@@ -22,7 +21,7 @@ class Scene:
     def start(self, screen, pygame_module):
         self.screen_size = screen.get_size()
         self.TriggerFlag = False
-        self.font = pygame_module.font.Font('../python game/font/Roboto-Black.ttf',30)
+        self.font = pygame.font.Font('../python game/font/Roboto-Black.ttf',25)
         self.pygame_module = pygame_module
         self.screen = screen
     def to_next_scene(self):# Найдет нашу сцены среди сохранённых и передаст следующую созданную

@@ -3,6 +3,7 @@ import pygame
 import player
 import numpy
 import enemy
+import test_scene
 class GameScene(scenes.Scene):
     def find_fact_cords(self,screencords):# cords по факту координаты для отрисовки объектов, это не фактические координаты, поэтому преобразуем с помощь якоря
         return (numpy.array(screencords) - numpy.array(self.anchor.cords))
@@ -10,6 +11,7 @@ class GameScene(scenes.Scene):
 
     def update(self):
         self.screen.fill((100,100,100))
+        self.my_Text_Table.update_drower(self.objects,self.events)
         dx,dy = self.player_obj.speed_vector
         super().update(relativespeed=[-dx, -dy])
         
@@ -35,19 +37,25 @@ class GameScene(scenes.Scene):
         #
         #
         #Создаём объекты
-      
+        self.my_Text_Table = test_scene.Text_Table(self.screen_size, [800,40], 20, self.font)
         self.player_obj = player.Player(self.player, [self.screen_size[0]//2, self.screen_size[1]//2], screen, pygame_module)
         self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
         self.icontest = scenes.Movable_Game_Object(icon, [100,110])
         self.anchor =  scenes.Movable_Game_Object(anchor, [0,0])
+        self.my_Text_Table = test_scene.Text_Table(self.screen_size, [800,40], 20, self.font)
+
+        
 
         #
         #
         #Добавляем новоиспечённые объекты в переменную для отрисовки
+       
         self.objects.append(self.enemy)
         self.objects.append(self.icontest)
         self.objects.append(self.player_obj)
         self.objects.append(self.anchor)
+        self.my_Text_Table.add_to_drower(self.objects)
+
 
 
 
