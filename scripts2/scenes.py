@@ -6,6 +6,8 @@ class Scene:
     def __init__(self):
         self.objects = []
         Scene.my_scenes.append(self)
+
+
     def update(self,  relativespeed = [0,0]):
         screen = self.screen
         pygame_module = self.pygame_module
@@ -23,7 +25,7 @@ class Scene:
         self.font = pygame_module.font.Font('../python game/font/Roboto-Black.ttf',30)
         self.pygame_module = pygame_module
         self.screen = screen
-    def to_next_scene(self):
+    def to_next_scene(self):# Найдет нашу сцены среди сохранённых и передаст следующую созданную
         index = 0
         for i in range(len(Scene.my_scenes)):
             if Scene.my_scenes[i] == self:
@@ -48,6 +50,14 @@ class Movable_Game_Object(GameObject):
     def __init__(self, surface, cords) -> None:
         super().__init__(surface, cords)
         self.type_in_str = 'Movable_Game_Object'
+        self.speed = 0
+        self.speed_vector = [0,0]
+    def update(self):
+        super().update()
+        x,y = self.cords
+        xs,ys = self.speed_vector
+        self.cords = [x+xs, y+ys]
+        
 
 if __name__ == "__main__":
     gost = pygame.image.load('../python game/images/gost.png')

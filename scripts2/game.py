@@ -39,7 +39,7 @@ class Game:# Главный игровой класс, для его созда�
                     self.game_in_run = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.screen = pygame.display.set_mode((600, 400))
+                        self.screen = pygame.display.set_mode((1200, 600))
                         
     #
 

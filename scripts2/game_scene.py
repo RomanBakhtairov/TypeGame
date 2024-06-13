@@ -1,9 +1,16 @@
 import scenes
 import pygame
+import player
+import numpy
+import enemy
 class GameScene(scenes.Scene):
+    def find_fact_cords(self,screencords):# cords по факту координаты для отрисовки объектов, это не фактические координаты, поэтому преобразуем с помощь якоря
+        return (numpy.array(screencords) - numpy.array(self.anchor.cords))
+
+
     def update(self):
         self.screen.fill((100,100,100))
-        dx,dy = self.player_obj.player_speed_vector
+        dx,dy = self.player_obj.speed_vector
         super().update(relativespeed=[-dx, -dy])
         
         '''Важное примечание. Тут фигурирует идея относительной и абсолютной скорости. Относительная будет работать на все объект
@@ -21,39 +28,28 @@ class GameScene(scenes.Scene):
         #
         self.player = pygame_module.Surface((50,50))#Пространство, чтобы поменять код
         self.player.fill("Blue")
-        #
+        anchor =  pygame_module.Surface((1,1))
         icon = pygame.image.load(scenes.Scene.IM_path + 'icon.png').convert_alpha()
-        self.player_obj = player(self.player, [self.screen_size[0]//2, self.screen_size[1]//2], screen, pygame_module)
+        enem =  pygame_module.Surface((50,50))
+        enem.fill('Red')
+        #
+        #
+        #Создаём объекты
+      
+        self.player_obj = player.Player(self.player, [self.screen_size[0]//2, self.screen_size[1]//2], screen, pygame_module)
+        self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
         self.icontest = scenes.Movable_Game_Object(icon, [100,110])
+        self.anchor =  scenes.Movable_Game_Object(anchor, [0,0])
+
+        #
+        #
+        #Добавляем новоиспечённые объекты в переменную для отрисовки
+        self.objects.append(self.enemy)
         self.objects.append(self.icontest)
         self.objects.append(self.player_obj)
+        self.objects.append(self.anchor)
 
 
 
 
 
-
-class player(scenes.Movable_Game_Object):
-    def __init__(self, surface, cords,screen,pygame) -> None:
-        super().__init__(surface, cords)
-        self.screen = screen
-        self.pygame = pygame
-        self.speed = 1
-        self.player_speed_vector = [0,0]
-    def update(self):#управление игроком
-        super().update()
-        keys = self.pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.player_speed_vector[0] = -self.speed
-        elif keys[pygame.K_RIGHT]:
-            self.player_speed_vector[0] = self.speed
-        elif keys[pygame.K_DOWN]:
-            self.player_speed_vector[1] = self.speed
-        elif keys[pygame.K_UP]:
-            self.player_speed_vector[1] =- self.speed
-        else:
-            self.player_speed_vector = [0,0]
-        
-        x,y = self.cords
-        xs,ys = self.player_speed_vector
-        self.cords = [x+xs, y+ys]

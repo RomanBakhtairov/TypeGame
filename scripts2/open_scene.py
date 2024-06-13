@@ -7,6 +7,9 @@ class StartScene(scenes.Scene):
         self.texter = self.font.render('Начать игру', False, 'White')
         self.button_im = pygame_module.image.load(scenes.Scene.IM_path + 'button2.png')
         self.button = Button(self.texter, self.button_im,[450,300])
+        #
+        #
+        #
         self.objects.append( self.button.frame)
         self.objects.append( self.button.text)
     def update(self):# здесь происходит отслеживание нажатия на кнопку
