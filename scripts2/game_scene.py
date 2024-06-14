@@ -38,16 +38,16 @@ class GameScene(scenes.Scene):
         #
         #
         #Создаём объекты
-        self. interactive_text = test_scene.Text_Table(self.screen_size, [800,40], 500, self.font)
+        self. interactive_text = test_scene.Text_Table(self.screen_size, [800,40], 120, self.font)
         self.my_Text_Table = test_scene.Text_Table(self.screen_size, [800,40], 20, self.font)
         self.player_obj = player.Player(self.player, [self.screen_size[0]//2, self.screen_size[1]//2], screen, pygame_module)
-        self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
+        
         self.icontest = scenes.Movable_Game_Object(icon, [100,110])
         self.anchor =  scenes.Movable_Game_Object(anchor, [0,0])
         self.my_Text_Table = test_scene.Text_Table(self.screen_size, [800,40], 20, self.font)
         self.health_bar = player.Heelth_bar(self.player_obj )
-
-        self.my_Text_Table.write_text('японский магнитофон')
+        self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
+        self.enemy.set_texters(self.interactive_text, self.my_Text_Table)
 
         
 

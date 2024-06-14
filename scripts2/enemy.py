@@ -4,13 +4,14 @@ class Enemy(scenes.Movable_Game_Object):
     def __init__(self, surface, cords, player_Obj) -> None:
         super().__init__(surface, cords)
         self.health = 100
-        self.damage = 30
+        self.damage = 5
         self.ticker = 0
+        self.str_text_for_question = 'Как тебя зовут?'
         self.player = player_Obj
         self.battle_distance = 500
         self.launch_distance = 700 #дистанция, с которой противник начинает преследовать игрока(условно - это половина ребра квадрата)
         self.attack_distance = 100 #дистанция, с которой начинается бой с противником
-        self.current_condition = Enemy.CONDISIONS[0]
+        self.previous_condition = self.current_condition = Enemy.CONDISIONS[0]
         self.speed = 0.3
     def find_actual_dist(self):
         self.xdist = self.player.cords[0] - self.cords[0]
@@ -20,22 +21,39 @@ class Enemy(scenes.Movable_Game_Object):
     def update(self):
         super().update()
         self.define_current_condition()
-        if self.current_condition == Enemy.CONDISIONS[2]:
+        if self.current_condition == Enemy.CONDISIONS[2] or self.current_condition == Enemy.CONDISIONS[4]:
             actual_distance = self.find_actual_dist()
             self.speed_vector = [self.xdist/actual_distance* self.speed, self.ydist/actual_distance*self.speed ]
         else:
             self.speed_vector = [0,0]
         if self.current_condition == Enemy.CONDISIONS[1]:
             self.attack(self.player)
+        if self.current_condition == Enemy.CONDISIONS[4] or self.current_condition == Enemy.CONDISIONS[1]:
+            b =  self.input_texter.return_my_text()
+            if self.str_text_for_question ==b:
+                self.die()
+            
        
     def define_current_condition(self):
-         if self.find_actual_dist() < self.attack_distance:
-             self.current_condition = Enemy.CONDISIONS[1]
-         elif self.find_actual_dist() < self.launch_distance:
-             self.current_condition = Enemy.CONDISIONS[2]
-          
-         else:
-             self.current_condition = Enemy.CONDISIONS[0]
+        if  self.current_condition !=self.CONDISIONS[3]:
+            if self.find_actual_dist() < self.attack_distance:
+                self.current_condition = Enemy.CONDISIONS[1]
+            elif self.find_actual_dist() < self.battle_distance:
+                self.current_condition = Enemy.CONDISIONS[4]
+                if self.previous_condition != self.current_condition:
+                    self.enter_in_battle(self.str_text_for_question)
+                
+            elif self.find_actual_dist() < self.launch_distance:
+                self.current_condition = Enemy.CONDISIONS[2]
+                if self.previous_condition ==  Enemy.CONDISIONS[4]:
+                    self.question_texter.write_text('')
+                    self.input_texter.write_text('')
+                    self.input_texter.inWork = True
+            
+            else:
+                self.current_condition = Enemy.CONDISIONS[0]
+            self.previous_condition = self.current_condition
+         
     def attack(self, player):
         self.ticker += 1
         if self.ticker > 100:
@@ -44,10 +62,16 @@ class Enemy(scenes.Movable_Game_Object):
                 player.health = 0
             else:
                 player.health -= self.damage
-            print(player.health)
 
+    def set_texters(self, input_text_obj, question_text_obj):
+        self.input_texter =input_text_obj
+        self.question_texter = question_text_obj
     def die(self):
-        self.current_condition = self.CONDISIONS[3]
+        self.current_condition = Enemy.CONDISIONS[3]
+        print('We Die!!!')
+    def enter_in_battle(self,text):
+        self.question_texter.write_text(text)
+
 
         
 
