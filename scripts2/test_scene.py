@@ -19,9 +19,12 @@ class TestScene(scenes.Scene):
 
 
 class Text_Table:
-
-
-
+    def deleteObjects(self):
+        for i in self.myTableObjects:
+            i.surface = pygame.Surface((0,0))
+        for i in self.myTextObjects:
+            i.surface = pygame.Surface((0,0))
+        self.inWork = False
     def __init__(self,screen_size, width_and_hight,  y_cord,font) -> None:
         self.currentcords = [screen_size[0]//2 - width_and_hight[0]//2 , y_cord]
         self.width_and_hight = width_and_hight
@@ -32,6 +35,7 @@ class Text_Table:
         self.myTextObjects = []
         self.myTableSurf =  pygame.Surface((width_and_hight[0],width_and_hight[1]))
         self.myTableSurf.fill("White")
+        self.inWork = True
         #
         #
         #
@@ -41,25 +45,26 @@ class Text_Table:
         #
         #
     def key_event_handler(self, event):
-        if pygame.K_BACKSPACE == event.key:
-            if (self.texts[-1] != ''):
-                d = self.texts[-1] 
-                self.texts[-1] = d[:-1]
-            elif len(self.myTableObjects)> 1:
-                self.currentcords[1] -= self.width_and_hight[1]
-                self.texts = self.texts[:-1]
-                self.myTableObjects = self.myTableObjects[:-1]
-                self.myTextObjects = self.myTextObjects[:-1]
+        if self.inWork:
+            if pygame.K_BACKSPACE == event.key:
+                if (self.texts[-1] != ''):
+                    d = self.texts[-1] 
+                    self.texts[-1] = d[:-1]
+                elif len(self.myTableObjects)> 1:
+                    self.currentcords[1] -= self.width_and_hight[1]
+                    self.texts = self.texts[:-1]
+                    self.myTableObjects = self.myTableObjects[:-1]
+                    self.myTextObjects = self.myTextObjects[:-1]
 
-        else:   
-            if self.font.size(self.texts[-1]+event.unicode)[0] >= self.width_and_hight[0]:
-                self.currentcords[1] += self.width_and_hight[1]
-                self.texts.append(event.unicode)
-                self.myTableObjects.append(scenes.GameObject(self.myTableSurf,[i for i in self.currentcords]))
-                self.myTextObjects.append(scenes.GameObject(self.font.render(self.texts[-1], True, 'Black'), [i for i in self.currentcords]))
-            else:
-                self.texts[-1] += event.unicode
-        self.myTextObjects[-1].surface = self.font.render(self.texts[-1], True, 'Black')
+            else:   
+                if self.font.size(self.texts[-1]+event.unicode)[0] >= self.width_and_hight[0]:
+                    self.currentcords[1] += self.width_and_hight[1]
+                    self.texts.append(event.unicode)
+                    self.myTableObjects.append(scenes.GameObject(self.myTableSurf,[i for i in self.currentcords]))
+                    self.myTextObjects.append(scenes.GameObject(self.font.render(self.texts[-1], True, 'Black'), [i for i in self.currentcords]))
+                else:
+                    self.texts[-1] += event.unicode
+            self.myTextObjects[-1].surface = self.font.render(self.texts[-1], True, 'Black')
 
     def return_objects_for_draw(self):
 
@@ -102,7 +107,37 @@ class Text_Table:
         #
         for i in Table_objects_for_add+Text_objects_for_add:
             objects.append(i)
-            
+    def return_my_text(self):
+        c = ''
+        for i in self.texts:
+            c+= i 
+        return c
+
+    def write_text(self,string):
+            self.inWork = False
+            flag = True
+            while flag:
+                if (self.texts[-1] != ''):
+                    d = self.texts[-1] 
+                    self.texts[-1] = d[:-1]
+                elif len(self.myTableObjects)> 1:
+                    self.currentcords[1] -= self.width_and_hight[1]
+                    self.texts = self.texts[:-1]
+                    self.myTableObjects = self.myTableObjects[:-1]
+                    self.myTextObjects = self.myTextObjects[:-1]
+                else:
+                    flag = False
+                self.myTextObjects[-1].surface = self.font.render(self.texts[-1], True, 'Black')    
+            for i in string:
+
+                if self.font.size(self.texts[-1]+i)[0] >= self.width_and_hight[0]:
+                    self.currentcords[1] += self.width_and_hight[1]
+                    self.texts.append(i)
+                    self.myTableObjects.append(scenes.GameObject(self.myTableSurf,[i for i in self.currentcords]))
+                    self.myTextObjects.append(scenes.GameObject(self.font.render(self.texts[-1], True, 'Black'), [i for i in self.currentcords]))
+                else:
+                    self.texts[-1] += i
+                self.myTextObjects[-1].surface = self.font.render(self.texts[-1], True, 'Black')        
 
 
                 
