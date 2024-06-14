@@ -48,6 +48,14 @@ class GameObject:
 class Movable_Game_Object(GameObject):
     def __init__(self, surface, cords) -> None:
         super().__init__(surface, cords)
+        self.base_surf = surface
+        self.animation_right = []
+        self.animation_left = []
+        self.rigth_count = 0
+        self.left_count = 0
+        #
+        #
+        #
         self.type_in_str = 'Movable_Game_Object'
         self.speed = 0
         self.speed_vector = [0,0]
@@ -56,6 +64,26 @@ class Movable_Game_Object(GameObject):
         x,y = self.cords
         xs,ys = self.speed_vector
         self.cords = [x+xs, y+ys]
+        #
+        #
+        #
+        if self.speed_vector[0] > 0:
+            if len( self.animation_right) > 0:
+                if self.rigth_count+1 >= len(self.animation_right):
+                    self.rigth_count = 0
+                else:
+                    self.rigth_count +=1
+                self.surface = self.animation_right[self.rigth_count]
+        elif self.speed_vector[0] < 0:
+            if len( self.animation_left) > 0:
+                if self.left_count+1 >= len(self.animation_left):
+                    self.left_count = 0
+                else:
+                    self.left_count +=1
+                self.surface = self.animation_left[self.left_count]
+        else:
+            self.surface = self.base_surf
+            
         
 
 if __name__ == "__main__":

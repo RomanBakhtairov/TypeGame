@@ -3,6 +3,7 @@ import pygame
 class Player(scenes.Movable_Game_Object):
     def __init__(self, surface, cords,screen,pygame) -> None:
         super().__init__(surface, cords)
+        self.killed_enemy_counter = 0
         self.health = 100
         self.screen = screen
         self.pygame = pygame
@@ -31,6 +32,11 @@ class Player(scenes.Movable_Game_Object):
             self.speed_vector[1] =- self.speed
         else:
             self.speed_vector = [0,0]
+    def we_kill_enemy(self):
+        self.killed_enemy_counter +=1
+        if self.killed_enemy_counter ==2:
+            c = pygame.font.Font('../python game/font/Roboto-Black.ttf',25)
+            self.base_surf = c.render('Вы выиграли!',True,'Black', 'White')
 
 class Heelth_bar(scenes.GameObject):
     def __init__(self,player, surface = pygame.Surface((200, 20)), cords = [10, 40]) -> None:

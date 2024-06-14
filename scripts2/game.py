@@ -52,7 +52,7 @@ class Game:# Главный игровой класс, для его созда�
 
 if __name__ == '__main__':
     pygame.init()# Это для pygame 
-    newscene = gm.GameScene()#Создаем сцены в порядке следования
+    newscene = op.StartScene()#Создаем сцены в порядке следования
     game_scene = gm.GameScene()
     my_game = Game(newscene)
     

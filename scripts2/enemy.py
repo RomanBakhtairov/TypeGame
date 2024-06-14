@@ -69,6 +69,7 @@ class Enemy(scenes.Movable_Game_Object):
         self.input_texter.hide(True)
         self.question_texter.hide(True)
     def die(self):
+        self.player.we_kill_enemy()
         self.current_condition = Enemy.CONDISIONS[3]
         self.question_texter.write_text('')
         self.input_texter.write_text('')
