@@ -8,11 +8,11 @@ class Enemy(scenes.Movable_Game_Object):
         self.ticker = 0
         self.str_text_for_question = 'Как тебя зовут?'
         self.player = player_Obj
-        self.battle_distance = 500
+        self.battle_distance = 150
         self.launch_distance = 700 #дистанция, с которой противник начинает преследовать игрока(условно - это половина ребра квадрата)
-        self.attack_distance = 100 #дистанция, с которой начинается бой с противником
+        self.attack_distance = 50 #дистанция, с которой начинается бой с противником
         self.previous_condition = self.current_condition = Enemy.CONDISIONS[0]
-        self.speed = 0.3
+        self.speed = 0.9
     def find_actual_dist(self):
         self.xdist = self.player.cords[0] - self.cords[0]
         self.ydist = self.player.cords[1] - self.cords[1]
@@ -66,11 +66,23 @@ class Enemy(scenes.Movable_Game_Object):
     def set_texters(self, input_text_obj, question_text_obj):
         self.input_texter =input_text_obj
         self.question_texter = question_text_obj
+        self.input_texter.hide(True)
+        self.question_texter.hide(True)
     def die(self):
         self.current_condition = Enemy.CONDISIONS[3]
-        print('We Die!!!')
+        self.question_texter.write_text('')
+        self.input_texter.write_text('')
+        self.player.inbattle = False
+        self.input_texter.inWork = False
+        self.input_texter.hide(True)
+        self.question_texter.hide(True)
     def enter_in_battle(self,text):
+        self.input_texter.hide(False)
+        self.question_texter.hide(False)
         self.question_texter.write_text(text)
+        self.player.inbattle = True
+        self.input_texter.inWork = True
+        self.speed = self.speed * 0.05
 
 
         

@@ -47,15 +47,18 @@ class GameScene(scenes.Scene):
         self.my_Text_Table = test_scene.Text_Table(self.screen_size, [800,40], 20, self.font)
         self.health_bar = player.Heelth_bar(self.player_obj )
         self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
+        self.enemy1 = enemy.Enemy(enem, [self.screen_size[0]//2+ 1500, self.screen_size[1]//2], self.player_obj)
         self.enemy.set_texters(self.interactive_text, self.my_Text_Table)
+        self.enemy1.set_texters(self.interactive_text, self.my_Text_Table)
+
 
         
 
         #
         #
         #Добавляем новоиспечённые объекты в переменную для отрисовки
-
         self.objects.append(self.enemy)
+        self.objects.append(self.enemy1)
         self.objects.append(self.icontest)
         self.objects.append(self.player_obj)
         self.objects.append(self.anchor)

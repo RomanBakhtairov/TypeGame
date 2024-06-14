@@ -19,6 +19,27 @@ class TestScene(scenes.Scene):
 
 
 class Text_Table:
+    def hide(self,flag):
+        
+        if flag:
+            if len(self.myTableSurface2) == 0:
+                for i in self.myTableObjects:
+                    self.myTableSurface2.append(i.surface)
+                    i.surface = pygame.Surface((0,0))
+            if len(self.myTextSurface2) == 0:
+                for i in self.myTextObjects:
+                    self.myTextSurface2.append(i.surface)
+                    i.surface = pygame.Surface((0,0))
+        else:
+            for i,c in enumerate(self.myTableObjects):
+                    c.surface = self.myTableSurface2[i]
+
+            for i,c in enumerate(self.myTextObjects):
+                    c.surface = self.myTextSurface2[i]
+            self.myTableSurface2 = []
+            self.myTextSurface2  = []
+
+
     def deleteObjects(self):
         for i in self.myTableObjects:
             i.surface = pygame.Surface((0,0))
@@ -27,10 +48,12 @@ class Text_Table:
         self.inWork = False
     def __init__(self,screen_size, width_and_hight,  y_cord,font) -> None:
         self.currentcords = [screen_size[0]//2 - width_and_hight[0]//2 , y_cord]
+        self.myTableSurface2 = []
+        self.myTextSurface2 = []
         self.width_and_hight = width_and_hight
         self.font = font
         self.texts = []
-        self.texts.append('Заходит, значит, Штирлиц в бар...')
+        self.texts.append('')
         self.myTableObjects = []
         self.myTextObjects = []
         self.myTableSurf =  pygame.Surface((width_and_hight[0],width_and_hight[1]))

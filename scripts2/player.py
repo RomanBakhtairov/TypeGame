@@ -13,6 +13,8 @@ class Player(scenes.Movable_Game_Object):
         super().update()
         if not(self.inbattle) and self.health > 0:
             self.move()
+        else:
+            self.speed_vector = [0,0]
         #
         #
         #
