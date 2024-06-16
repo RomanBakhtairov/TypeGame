@@ -7,6 +7,7 @@ class Scene:
         self.objects = []
         Scene.my_scenes.append(self)
         self.events = []
+        
     def update(self,  relativespeed = [0,0]):
         screen = self.screen
         pygame_module = self.pygame_module
@@ -46,9 +47,12 @@ class GameObject:
         pass
 
 class Movable_Game_Object(GameObject):
+    die_image = pygame.Surface((50,50))
     def __init__(self, surface, cords) -> None:
         super().__init__(surface, cords)
         self.base_surf = surface
+        self.animation_updater = 50
+        self.animation_update_check = 0
         self.animation_right = []
         self.animation_left = []
         self.rigth_count = 0
@@ -59,6 +63,7 @@ class Movable_Game_Object(GameObject):
         self.type_in_str = 'Movable_Game_Object'
         self.speed = 0
         self.speed_vector = [0,0]
+        self.previous_speed_vector = self.speed_vector
     def update(self):
         super().update()
         x,y = self.cords
@@ -67,23 +72,52 @@ class Movable_Game_Object(GameObject):
         #
         #
         #
-        if self.speed_vector[0] > 0:
-            if len( self.animation_right) > 0:
-                if self.rigth_count+1 >= len(self.animation_right):
-                    self.rigth_count = 0
+        if self.animation_update_check > self.animation_updater:
+            if self.speed_vector[0] > 0:
+                if len( self.animation_right) > 0:
+                    if self.rigth_count+1 >= len(self.animation_right):
+                        self.rigth_count = 0
+                    else:
+                        self.rigth_count +=1
+                    self.surface = self.animation_right[self.rigth_count]
+            elif self.speed_vector[0] < 0:
+                if len( self.animation_left) > 0:
+                    if self.left_count+1 >= len(self.animation_left):
+                        self.left_count = 0
+                    else:
+                        self.left_count +=1
+                    self.surface = self.animation_left[self.left_count]
+            else:
+                if len(self.animation_right )> 0 and len(self.animation_left )> 0:
+                    if self.previous_speed_vector[0] >0 and self.speed_vector[0] == 0:
+                        self.surface = self.animation_right[0]
+                    elif self.previous_speed_vector[0] <0 and self.speed_vector[0] == 0:
+                       
+                        self.surface = self.animation_left[0]
                 else:
-                    self.rigth_count +=1
-                self.surface = self.animation_right[self.rigth_count]
-        elif self.speed_vector[0] < 0:
-            if len( self.animation_left) > 0:
-                if self.left_count+1 >= len(self.animation_left):
-                    self.left_count = 0
-                else:
-                    self.left_count +=1
-                self.surface = self.animation_left[self.left_count]
+                    self.surface = self.base_surf
+            self.previous_speed_vector = self.speed_vector
+            self.animation_update_check  = 0
         else:
-            self.surface = self.base_surf
-            
+            self.animation_update_check +=1
+      
+    def add_animation_keys(self, key_number, path, anim_key):# где anim_key - код: "right" или "left"
+            def return_keys(key_number, path ):
+                return_massive = []
+                for i in range(1, key_number):
+                    c = pygame.image.load(path + str(i) + '.png').convert_alpha()
+                    return_massive.append(pygame.transform.scale(c, (60,60)))
+                return return_massive
+            if anim_key == 'right':
+                self.animation_right  = return_keys(key_number, path)
+            if anim_key == 'left':
+                self.animation_left  = return_keys(key_number, path)
+    def die(self):
+        self.surface = Movable_Game_Object.die_image
+        self.animation_left[0] = Movable_Game_Object.die_image
+        self.animation_right[0] =Movable_Game_Object.die_image
+
+                
         
 
 if __name__ == "__main__":

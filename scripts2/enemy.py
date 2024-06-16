@@ -42,6 +42,7 @@ class Enemy(scenes.Movable_Game_Object):
                 self.current_condition = Enemy.CONDISIONS[4]
                 if self.previous_condition != self.current_condition:
                     self.enter_in_battle(self.str_text_for_question)
+                    self.animation_updater = self.animation_updater*4
                 
             elif self.find_actual_dist() < self.launch_distance:
                 self.current_condition = Enemy.CONDISIONS[2]
@@ -69,6 +70,9 @@ class Enemy(scenes.Movable_Game_Object):
         self.input_texter.hide(True)
         self.question_texter.hide(True)
     def die(self):
+        super().die()
+        self.animation_left[0] = scenes.Movable_Game_Object.die_image
+        self.animation_right[0] =scenes.Movable_Game_Object.die_image
         self.player.we_kill_enemy()
         self.current_condition = Enemy.CONDISIONS[3]
         self.question_texter.write_text('')

@@ -16,6 +16,9 @@ class Player(scenes.Movable_Game_Object):
             self.move()
         else:
             self.speed_vector = [0,0]
+
+        if self.health <=0:
+            self.die()
         #
         #
         #
@@ -37,6 +40,10 @@ class Player(scenes.Movable_Game_Object):
         if self.killed_enemy_counter ==2:
             c = pygame.font.Font('../python game/font/Roboto-Black.ttf',25)
             self.base_surf = c.render('Вы выиграли!',True,'Black', 'White')
+    def die(self):
+        super().die()
+        self.animation_left[0] = Player.die_image
+        self.animation_right[0] =Player.die_image
 
 class Heelth_bar(scenes.GameObject):
     def __init__(self,player, surface = pygame.Surface((200, 20)), cords = [10, 40]) -> None:
