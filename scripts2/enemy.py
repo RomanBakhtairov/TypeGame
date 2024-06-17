@@ -1,6 +1,6 @@
-import scenes, pygame, math,random
+import scenes, pygame, math, random
 class Enemy(scenes.Movable_Game_Object):
-    CONDISIONS = ('stay','attack','chase','die', 'battle')#У противника есть разные состояния, но текущим может быть только одно
+    CONDISIONS = ('stay','attack','chase','die', 'battle') #У противника есть разные состояния, но текущим может быть только одно
     def __init__(self, surface, cords, player_Obj) -> None:
         super().__init__(surface, cords)
         self.health = 100
@@ -17,7 +17,7 @@ class Enemy(scenes.Movable_Game_Object):
                                       "Lorem ipsum"])
         self.player = player_Obj
         self.battle_distance = 150
-        self.launch_distance = 700 #дистанция, с которой противник начинает преследовать игрока(условно - это половина ребра квадрата)
+        self.launch_distance = 700 #дистанция, с которой противник начинает преследовать игрока (условно - это половина ребра квадрата)
         self.attack_distance = 50 #дистанция, с которой начинается бой с противником
         self.previous_condition = self.current_condition = Enemy.CONDISIONS[0]
         self.speed = 0.9
@@ -73,14 +73,14 @@ class Enemy(scenes.Movable_Game_Object):
                 player.health -= self.damage
 
     def set_texters(self, input_text_obj, question_text_obj):
-        self.input_texter =input_text_obj
+        self.input_texter = input_text_obj
         self.question_texter = question_text_obj
         self.input_texter.hide(True)
         self.question_texter.hide(True)
     def die(self):
         super().die()
         self.animation_left[0] = scenes.Movable_Game_Object.die_image
-        self.animation_right[0] =scenes.Movable_Game_Object.die_image
+        self.animation_right[0] = scenes.Movable_Game_Object.die_image
         self.player.we_kill_enemy()
         self.current_condition = Enemy.CONDISIONS[3]
         self.question_texter.write_text('')
