@@ -1,4 +1,4 @@
-import scenes, pygame, math
+import scenes, pygame, math,random
 class Enemy(scenes.Movable_Game_Object):
     CONDISIONS = ('stay','attack','chase','die', 'battle')#У противника есть разные состояния, но текущим может быть только одно
     def __init__(self, surface, cords, player_Obj) -> None:
@@ -6,7 +6,15 @@ class Enemy(scenes.Movable_Game_Object):
         self.health = 100
         self.damage = 5
         self.ticker = 0
-        self.str_text_for_question = 'Как тебя зовут?'
+        self.str_text_for_question = random.choice(["Огнем и мечом",
+                                      "Безупречный иней",
+                                      "Из солнца и крови",
+                                      "Отчуждение покровов",
+                                      "Стрекотание в душе",
+                                      "Вой в сердце",
+                                      "Ускользающая смерть",
+                                      "Неотвратимость голода",
+                                      "Lorem ipsum"])
         self.player = player_Obj
         self.battle_distance = 150
         self.launch_distance = 700 #дистанция, с которой противник начинает преследовать игрока(условно - это половина ребра квадрата)

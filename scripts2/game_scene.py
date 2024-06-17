@@ -36,6 +36,7 @@ class GameScene(scenes.Scene):
         map = pygame.image.load(scenes.Scene.IM_path + 'вариант1.png').convert_alpha()
         map =  pygame.transform.scale(map, (6000,4000))
         enem = pygame.image.load(  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_right_e/1.png').convert_alpha()
+        enem =  pygame.transform.scale(enem, (150,150))
         #
         #
         #Создаём объекты
@@ -50,28 +51,24 @@ class GameScene(scenes.Scene):
         self.player_obj.add_animation_keys(5, scenes.Scene.IM_path + '/проект питон/character/character_right/character_right_','right')
         self.player_obj.add_animation_keys(5, scenes.Scene.IM_path + '/проект питон/character/character_left/character_left_','left')
 
-
-
-        self.enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ 600, self.screen_size[1]//2], self.player_obj)
-        self.enemy1 = enemy.Enemy(enem, [self.screen_size[0]//2+ 1500, self.screen_size[1]//2], self.player_obj)
-        self.enemy.set_texters(self.interactive_text, self.my_Text_Table)
-        self.enemy1.set_texters(self.interactive_text, self.my_Text_Table)
+        self.enemy_list =[]
+        def create_enemy(cords):
+             my_enemy = enemy.Enemy(enem, [self.screen_size[0]//2+ cords[0], self.screen_size[1]//2+ cords[1]], self.player_obj)
+             my_enemy.set_texters(self.interactive_text, self.my_Text_Table)
+             my_enemy.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_right_e/','right', 150)
+             my_enemy.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_left_e/','left', 150)
+             self.enemy_list.append(my_enemy)
         #
-        #Анимации противников
-        self.enemy.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_right_e/','right')
-        self.enemy.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_left_e/','left')
-        self.enemy1.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_right_e/','right')
-        self.enemy1.add_animation_keys(6,  scenes.Scene.IM_path + 'проект питон/enemy_3/enemy_3_left_e/','left')
-
-
-        
-
+        #
+        create_enemy([0,700])
+        create_enemy([1400,0])
+        create_enemy([-1400,0])
         #
         #
         #Добавляем новоиспечённые объекты в переменную для отрисовки
         self.objects.append(self.map)
-        self.objects.append(self.enemy)
-        self.objects.append(self.enemy1)
+        for i in self.enemy_list:
+            self.objects.append(i)
         self.objects.append(self.player_obj)
         self.objects.append(self.anchor)
         self.my_Text_Table.add_to_drower(self.objects)

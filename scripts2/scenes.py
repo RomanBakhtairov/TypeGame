@@ -101,12 +101,12 @@ class Movable_Game_Object(GameObject):
         else:
             self.animation_update_check +=1
       
-    def add_animation_keys(self, key_number, path, anim_key):# где anim_key - код: "right" или "left"
+    def add_animation_keys(self, key_number, path, anim_key, size = 60):# где anim_key - код: "right" или "left"
             def return_keys(key_number, path ):
                 return_massive = []
                 for i in range(1, key_number):
                     c = pygame.image.load(path + str(i) + '.png').convert_alpha()
-                    return_massive.append(pygame.transform.scale(c, (60,60)))
+                    return_massive.append(pygame.transform.scale(c, (size,size)))
                 return return_massive
             if anim_key == 'right':
                 self.animation_right  = return_keys(key_number, path)

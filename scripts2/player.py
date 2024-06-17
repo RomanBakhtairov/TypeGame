@@ -37,9 +37,13 @@ class Player(scenes.Movable_Game_Object):
             self.speed_vector = [0,0]
     def we_kill_enemy(self):
         self.killed_enemy_counter +=1
-        if self.killed_enemy_counter ==2:
-            c = pygame.font.Font('../python game/font/Roboto-Black.ttf',25)
-            self.base_surf = c.render('Вы выиграли!',True,'Black', 'White')
+        if self.killed_enemy_counter ==3:
+            c = pygame.font.Font('../python game/font/Roboto-Black.ttf',45)
+            for i in range(len(self.animation_left)):
+                a =  c.render('Вы выиграли!',True,'Black', 'White')
+                self.animation_left[i] = a
+                self.animation_right[i] =a
+
     def die(self):
         super().die()
         self.animation_left[0] = Player.die_image
